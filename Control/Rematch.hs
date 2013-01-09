@@ -22,3 +22,6 @@ runMatch :: (Show a) => Matcher a -> a -> Match
 runMatch m a = if (match m $ a)
   then MatchSuccess
   else MatchFailure ("Expected: " ++ describeMatch m ++ " " ++ show a)
+
+is :: (Show a, Eq a) => a -> Matcher a
+is a = Matcher (a == ) $ show a ++ " to equal"

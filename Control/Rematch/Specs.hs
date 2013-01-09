@@ -22,3 +22,13 @@ main = hspec $ do
   describe "assertThat" $ do
     it "is used as an hunit test" $
       assertThat "a" (hasItem 'a')
+
+  generalPurposeMatcherSpecs
+
+generalPurposeMatcherSpecs :: Spec
+generalPurposeMatcherSpecs = describe "general purpose matchers" $ do
+  describe "is" $ do
+    it "matches on equality" $
+      runMatch (is 'a') 'a' @?= MatchSuccess
+    it "fails on inequality" $
+      runMatch (is 'b') 'a' @?= MatchFailure "Expected: 'b' to equal 'a'"
