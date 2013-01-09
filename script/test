@@ -1,0 +1,3 @@
+#!/bin/bash
+
+runghc Control/Rematch/Specs.hs
