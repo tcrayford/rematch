@@ -39,7 +39,17 @@ combinedMatcherSpecs = describe "combined matchers" $ do
       checkMatch (allOf []) 'a' @?= Just ("allOf", "was: no matchers supplied")
 
     it "fails if an individual matcher matches" $
-      checkMatch (allOf [no(is 'a'), is 'b']) 'a' @?= Just ("all(not equalTo 'a', equalTo 'b')","(was 'a', was 'a')")
+      checkMatch (allOf [is 'a', is 'b']) 'a' @?= Just ("all(equalTo 'a', equalTo 'b')","(was 'a')")
+
+  describe "anyOf" $ do
+    it "matches when one of the individual matchers match" $
+      checkMatch (anyOf [is 'a', is 'b']) 'a' @?= Nothing
+
+    it "fails when you don't supply a matcher at all" $
+      checkMatch (anyOf []) 'a' @?= Just ("anyOf", "was: no matchers supplied")
+
+    it "fails if all the individual matchers fail" $
+      checkMatch (anyOf [is 'a', is 'b']) 'c' @?= Just ("or(equalTo 'a', equalTo 'b')", "(was 'c', was 'c')")
 
 joinSpecs :: Spec
 joinSpecs = describe "join" $ do
