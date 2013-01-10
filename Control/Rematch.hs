@@ -30,10 +30,11 @@ is a = Matcher (a == ) ("equalTo " ++ show a) (\b -> "was " ++ show b)
 allOf :: (Show a, Eq a) => [Matcher a] -> Matcher a
 allOf [] = Matcher (const False) "allOf" (const "was: no matchers supplied")
 allOf matchers = Matcher {
-    match = (\a -> and $ map (\m -> match m a) matchers)
+    match = (and . matching)
   , description = describeList "all" $ map description matchers
-  , describeMismatch = (\a -> describeList "was" (map ((flip describeMismatch) a) (filter (\m -> not $ match m $ a) matchers)))
+  , describeMismatch = (\a -> describeList "" (map ((flip describeMismatch) a) (filter (\m -> not $ match m $ a) matchers)))
   }
+  where matching a = map (\m -> match m $ a) matchers
 
 describeList :: String -> [String] -> String
 describeList start xs = start ++ "(" ++ join ", " xs ++ ")"
