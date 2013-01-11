@@ -9,10 +9,10 @@ data Matcher a = Matcher {
   , describeMismatch :: a -> String
   }
 
-assertThat :: (Show a) => a -> Matcher a -> Assertion
+assertThat :: a -> Matcher a -> Assertion
 assertThat a matcher = (runMatch matcher) a @?= MatchSuccess
 
-expect :: (Show a) => a -> Matcher a -> Assertion
+expect :: a -> Matcher a -> Assertion
 expect = assertThat
 
 no :: Matcher a -> Matcher a
@@ -29,7 +29,7 @@ is a = Matcher (a == ) ("equalTo " ++ show a) standardMismatch
 equalTo :: (Show a, Eq a) => a -> Matcher a
 equalTo = is
 
-allOf :: (Show a, Eq a) => [Matcher a] -> Matcher a
+allOf :: [Matcher a] -> Matcher a
 allOf [] = Matcher (const False) "allOf" (const "was: no matchers supplied")
 allOf matchers = Matcher {
     match = (and . matchList matchers)
@@ -40,7 +40,7 @@ allOf matchers = Matcher {
 matchList :: [Matcher a] -> a -> [Bool]
 matchList matchers a = map (\m -> match m $ a) matchers
 
-anyOf :: (Show a) => [Matcher a] -> Matcher a
+anyOf :: [Matcher a] -> Matcher a
 anyOf [] = Matcher (const False) "anyOf" (const "was: no matchers supplied")
 anyOf matchers = Matcher {
     match = (or . matchList matchers)
@@ -55,7 +55,7 @@ everyItem m = Matcher {
   , describeMismatch = (\as -> describeList "" (map (describeMismatch m) (filter (not . match m) as)))
   }
 
-hasItem :: (Show a) => Matcher a -> Matcher [a]
+hasItem :: Matcher a -> Matcher [a]
 hasItem m = Matcher {
     match = (or . map (match m))
   , description = "hasItem(" ++ description m ++ ")"
@@ -64,7 +64,7 @@ hasItem m = Matcher {
   where go [] = "got an empty list: []"
         go as = describeList "" (map (describeMismatch m) as)
 
-containsInAnyOrder :: (Show a) => [Matcher a] -> Matcher [a]
+containsInAnyOrder :: [Matcher a] -> Matcher [a]
 containsInAnyOrder ms = anyOf (map hasItem ms)
 
 isEmpty :: (Show a) => Matcher [a]
@@ -74,7 +74,7 @@ isEmpty = Matcher {
   , describeMismatch = standardMismatch
   }
 
-ordMatcher :: (Ord a, Show a) => String -> (a -> a -> Bool) -> a -> Matcher a
+ordMatcher :: (Show a) => String -> (a -> a -> Bool) -> a -> Matcher a
 ordMatcher name comp a = Matcher {
     match = (comp a)
   , description = name ++ "(" ++ show a ++ ")"
