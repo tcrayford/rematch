@@ -82,6 +82,15 @@ listMatcherSpecs = describe "list matchers" $ do
     it "fails when there are no items" $
       checkMatch (hasItem (equalTo 'a')) [] @?= Just ("hasItem(equalTo 'a')", "got an empty list: []")
 
+  describe "isEmpty" $ do
+    it "matches when the thing is empty" $
+      checkMatch isEmpty ([] :: String) @?= Nothing
+
+    it "fails when the thing has items" $
+      checkMatch isEmpty [1] @?= Just ("isEmpty", "was [1]")
+
+  it "hasSize" pending
+
 comparableSpecs :: Spec
 comparableSpecs = describe "comparables" $ do
   describe "greaterThan" $ do
