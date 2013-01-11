@@ -40,7 +40,7 @@ allOf matchers = Matcher {
 matchList :: [Matcher a] -> a -> [Bool]
 matchList matchers a = map (\m -> match m $ a) matchers
 
-anyOf :: (Show a, Eq a) => [Matcher a] -> Matcher a
+anyOf :: (Show a) => [Matcher a] -> Matcher a
 anyOf [] = Matcher (const False) "anyOf" (const "was: no matchers supplied")
 anyOf matchers = Matcher {
     match = (or . matchList matchers)
@@ -55,7 +55,7 @@ everyItem m = Matcher {
   , describeMismatch = (\as -> describeList "" (map (describeMismatch m) (filter (not . match m) as)))
   }
 
-hasItem :: (Eq a, Show a) => Matcher a -> Matcher [a]
+hasItem :: (Show a) => Matcher a -> Matcher [a]
 hasItem m = Matcher {
     match = (or . map (match m))
   , description = "hasItem(" ++ description m ++ ")"
@@ -64,6 +64,8 @@ hasItem m = Matcher {
   where go [] = "got an empty list: []"
         go as = describeList "" (map (describeMismatch m) as)
 
+containsInAnyOrder :: (Show a) => [Matcher a] -> Matcher [a]
+containsInAnyOrder ms = anyOf (map hasItem ms)
 
 describeList :: String -> [String] -> String
 describeList start xs = start ++ "(" ++ join ", " xs ++ ")"
