@@ -9,10 +9,6 @@ data Matcher a = Matcher {
   , describeMismatch :: a -> String
   }
 
--- XXX: rework
-hasItem :: (Eq a, Show a) => a -> Matcher [a]
-hasItem a = Matcher (a `elem`) "has" standardMismatch
-
 assertThat :: (Show a) => a -> Matcher a -> Assertion
 assertThat a matcher = (runMatch matcher) a @?= MatchSuccess
 
@@ -26,6 +22,9 @@ runMatch m a = if (match m $ a)
 
 is :: (Show a, Eq a) => a -> Matcher a
 is a = Matcher (a == ) ("equalTo " ++ show a) standardMismatch
+
+equalTo :: (Show a, Eq a) => a -> Matcher a
+equalTo = is
 
 allOf :: (Show a, Eq a) => [Matcher a] -> Matcher a
 allOf [] = Matcher (const False) "allOf" (const "was: no matchers supplied")
@@ -50,8 +49,18 @@ everyItem :: Matcher a -> Matcher [a]
 everyItem m = Matcher {
     match = (and . map (match m))
   , description = "everyItem(" ++ description m ++ ")"
-  , describeMismatch = (\as -> describeList "" (map (describeMismatch m) as))
+  , describeMismatch = (\as -> describeList "" (map (describeMismatch m) (filter (not . match m) as)))
   }
+
+hasItem :: (Eq a, Show a) => Matcher a -> Matcher [a]
+hasItem m = Matcher {
+    match = (or . map (match m))
+  , description = "hasItem(" ++ description m ++ ")"
+  , describeMismatch = go
+  }
+  where go [] = "got an empty list: []"
+        go as = describeList "" (map (describeMismatch m) as)
+
 
 describeList :: String -> [String] -> String
 describeList start xs = start ++ "(" ++ join ", " xs ++ ")"

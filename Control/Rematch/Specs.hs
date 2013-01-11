@@ -15,7 +15,7 @@ main = hspec $ do
 
   describe "assertThat" $ do
     it "is used as an hunit test" $
-      assertThat "a" (hasItem 'a')
+      assertThat "a" (is "a")
 
   generalPurposeMatcherSpecs
   combinedMatcherSpecs
@@ -63,6 +63,19 @@ listMatcherSpecs = describe "list matchers" $ do
 
     it "matches when there are no items" $
       checkMatch (everyItem (is 'b')) [] @?= Nothing
+
+    it "only shows match failures for failing items" $
+      checkMatch (everyItem (is 'b')) ['a', 'b'] @?= Just ("everyItem(equalTo 'b')", "(was 'a')")
+
+  describe "hasItem" $ do
+    it "matches when one item matches" $
+      checkMatch (hasItem (equalTo 'a')) ['a', 'b'] @?= Nothing
+
+    it "fails when none of them match" $
+      checkMatch (hasItem (equalTo 'a')) ['b'] @?= Just ("hasItem(equalTo 'a')", "(was 'b')")
+
+    it "fails when there are no items" $
+      checkMatch (hasItem (equalTo 'a')) [] @?= Just ("hasItem(equalTo 'a')", "got an empty list: []")
 
 joinSpecs :: Spec
 joinSpecs = describe "join" $ do
