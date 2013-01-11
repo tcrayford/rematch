@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+echo "" | ghci -Wall -fwarn-tabs -Werror -fno-warn-orphans -fno-warn-unused-do-bind -v0 Control/Rematch/Specs.hs
+find Control -name "*.hs" | xargs hlint
+
