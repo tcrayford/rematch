@@ -46,6 +46,13 @@ anyOf matchers = Matcher {
   , describeMismatch = (\a -> describeList "" (map ((flip describeMismatch) a) matchers))
   }
 
+everyItem :: Matcher a -> Matcher [a]
+everyItem m = Matcher {
+    match = (and . map (match m))
+  , description = "everyItem(" ++ description m ++ ")"
+  , describeMismatch = (\as -> describeList "" (map (describeMismatch m) as))
+  }
+
 describeList :: String -> [String] -> String
 describeList start xs = start ++ "(" ++ join ", " xs ++ ")"
 

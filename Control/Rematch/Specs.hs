@@ -19,6 +19,7 @@ main = hspec $ do
 
   generalPurposeMatcherSpecs
   combinedMatcherSpecs
+  listMatcherSpecs
   joinSpecs
 
 generalPurposeMatcherSpecs :: Spec
@@ -50,6 +51,18 @@ combinedMatcherSpecs = describe "combined matchers" $ do
 
     it "fails if all the individual matchers fail" $
       checkMatch (anyOf [is 'a', is 'b']) 'c' @?= Just ("or(equalTo 'a', equalTo 'b')", "(was 'c', was 'c')")
+
+listMatcherSpecs :: Spec
+listMatcherSpecs = describe "list matchers" $ do
+  describe "everyItem" $ do
+    it "matches when every item matches" $
+      checkMatch (everyItem (is 'a')) ['a'] @?= Nothing
+
+    it "fails when one item fails the match" $
+      checkMatch (everyItem (is 'b')) ['a'] @?= Just ("everyItem(equalTo 'b')", "(was 'a')")
+
+    it "matches when there are no items" $
+      checkMatch (everyItem (is 'b')) [] @?= Nothing
 
 joinSpecs :: Spec
 joinSpecs = describe "join" $ do
