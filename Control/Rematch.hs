@@ -12,6 +12,9 @@ data Matcher a = Matcher {
 assertThat :: (Show a) => a -> Matcher a -> Assertion
 assertThat a matcher = (runMatch matcher) a @?= MatchSuccess
 
+expect :: (Show a) => a -> Matcher a -> Assertion
+expect = assertThat
+
 no :: Matcher a -> Matcher a
 no (Matcher m desc mismatch) = Matcher (not . m) ("not " ++ desc) (\a -> (mismatch a))
 
