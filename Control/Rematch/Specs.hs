@@ -24,6 +24,7 @@ main = hspec $ do
   generalPurposeMatcherSpecs
   combinedMatcherSpecs
   listMatcherSpecs
+  comparableSpecs
   joinSpecs
 
 generalPurposeMatcherSpecs :: Spec
@@ -80,6 +81,22 @@ listMatcherSpecs = describe "list matchers" $ do
 
     it "fails when there are no items" $
       checkMatch (hasItem (equalTo 'a')) [] @?= Just ("hasItem(equalTo 'a')", "got an empty list: []")
+
+comparableSpecs :: Spec
+comparableSpecs = describe "comparables" $ do
+  describe "greaterThan" $ do
+    it "matches when the item is greater" $
+      checkMatch (greaterThan 5) 6 @?= Nothing
+
+    it "fails when the item is lesser" $
+      checkMatch (greaterThan 5) 4 @?= Just ("greaterThan(5)", "was 4")
+
+  describe "lessThan" $ do
+    it "matches when the item is lesser" $
+      checkMatch (lessThan 5) 4 @?= Nothing
+
+    it "fails when the item is greater" $
+      checkMatch (lessThan 5) 6 @?= Just ("lessThan(5)", "was 6")
 
 joinSpecs :: Spec
 joinSpecs = describe "join" $ do

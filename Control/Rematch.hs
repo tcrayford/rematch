@@ -67,6 +67,20 @@ hasItem m = Matcher {
 containsInAnyOrder :: (Show a) => [Matcher a] -> Matcher [a]
 containsInAnyOrder ms = anyOf (map hasItem ms)
 
+greaterThan :: (Ord a, Show a) => a -> Matcher a
+greaterThan a = Matcher {
+    match = (a < )
+  , description = "greaterThan(" ++ show a ++ ")"
+  , describeMismatch = standardMismatch
+  }
+
+lessThan :: (Ord a, Show a) => a -> Matcher a
+lessThan a = Matcher {
+    match = (a > )
+  , description = "lessThan(" ++ show a ++ ")"
+  , describeMismatch = standardMismatch
+  }
+
 describeList :: String -> [String] -> String
 describeList start xs = start ++ "(" ++ join ", " xs ++ ")"
 
