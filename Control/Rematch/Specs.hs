@@ -28,7 +28,7 @@ main = hspec $ do
   joinSpecs
 
 generalPurposeMatcherSpecs :: Spec
-generalPurposeMatcherSpecs = describe "general purpose matchers" $ do
+generalPurposeMatcherSpecs = describe "general purpose matchers" $
   describe "is" $ do
     it "matches on equality" $
       checkMatch (is 'a') 'a' @?= Nothing
@@ -61,26 +61,26 @@ listMatcherSpecs :: Spec
 listMatcherSpecs = describe "list matchers" $ do
   describe "everyItem" $ do
     it "matches when every item matches" $
-      checkMatch (everyItem (is 'a')) ['a'] @?= Nothing
+      checkMatch (everyItem (is 1)) [1] @?= Nothing
 
     it "fails when one item fails the match" $
-      checkMatch (everyItem (is 'b')) ['a'] @?= Just ("everyItem(equalTo 'b')", "(was 'a')")
+      checkMatch (everyItem (is 1)) [3] @?= Just ("everyItem(equalTo 1)", "(was 3)")
 
     it "matches when there are no items" $
-      checkMatch (everyItem (is 'b')) [] @?= Nothing
+      checkMatch (everyItem (is 1)) [] @?= Nothing
 
     it "only shows match failures for failing items" $
-      checkMatch (everyItem (is 'b')) ['a', 'b'] @?= Just ("everyItem(equalTo 'b')", "(was 'a')")
+      checkMatch (everyItem (is 1)) [1, 3] @?= Just ("everyItem(equalTo 1)", "(was 3)")
 
   describe "hasItem" $ do
     it "matches when one item matches" $
-      checkMatch (hasItem (equalTo 'a')) ['a', 'b'] @?= Nothing
+      checkMatch (hasItem (equalTo 1)) [1, 3] @?= Nothing
 
     it "fails when none of them match" $
-      checkMatch (hasItem (equalTo 'a')) ['b'] @?= Just ("hasItem(equalTo 'a')", "(was 'b')")
+      checkMatch (hasItem (equalTo 1)) [3] @?= Just ("hasItem(equalTo 1)", "(was 3)")
 
     it "fails when there are no items" $
-      checkMatch (hasItem (equalTo 'a')) [] @?= Just ("hasItem(equalTo 'a')", "got an empty list: []")
+      checkMatch (hasItem (equalTo 3)) [] @?= Just ("hasItem(equalTo 3)", "got an empty list: []")
 
   describe "isEmpty" $ do
     it "matches when the thing is empty" $
@@ -119,6 +119,6 @@ joinSpecs = describe "join" $ do
     join ", " ["a", "b"] @?= "a, b"
 
 checkMatch :: Matcher a -> a -> Maybe (String, String)
-checkMatch m a = if (match m $ a)
+checkMatch m a = if match m a
   then Nothing
-  else Just (description m, describeMismatch m $ a)
+  else Just (description m, describeMismatch m a)

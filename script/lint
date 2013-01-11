@@ -2,6 +2,6 @@
 
 set -e
 
-echo "" | ghci -Wall -fwarn-tabs -Werror -fno-warn-orphans -fno-warn-unused-do-bind -v0 Control/Rematch/Specs.hs
+echo "" | ghci -Wall -fwarn-tabs -Werror -fno-warn-orphans -fno-warn-unused-do-bind -fno-warn-type-defaults -v0 Control/Rematch/Specs.hs
 find Control -name "*.hs" | xargs hlint
 
