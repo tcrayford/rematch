@@ -1,5 +1,6 @@
 module Control.Rematch where
 import Test.HUnit
+import qualified Data.Maybe as M
 
 data Match = MatchSuccess | MatchFailure String deriving (Eq, Show)
 
@@ -74,6 +75,13 @@ isEmpty = Matcher {
   , describeMismatch = standardMismatch
   }
 
+hasSize :: (Show a) => Int -> Matcher [a]
+hasSize n = Matcher {
+    match = ((== n) . length)
+  , description = "hasSize(" ++ show n ++ ")"
+  , describeMismatch = standardMismatch
+  }
+
 ordMatcher :: (Show a) => String -> (a -> a -> Bool) -> a -> Matcher a
 ordMatcher name comp a = Matcher {
     match = comp a
@@ -92,6 +100,20 @@ lessThan = ordMatcher "lessThan" (>)
 
 lessThanOrEqual :: (Ord a, Show a) => a -> Matcher a
 lessThanOrEqual = ordMatcher "lessThanOrEqual" (>=)
+
+isJust :: (Show a) => Matcher (Maybe a)
+isJust = Matcher {
+    match = M.isJust
+  , description = "isJust"
+  , describeMismatch = standardMismatch
+  }
+
+isNothing :: (Show a) => Matcher (Maybe a)
+isNothing = Matcher {
+    match = M.isNothing
+  , description = "isNothing"
+  , describeMismatch = standardMismatch
+  }
 
 describeList :: String -> [String] -> String
 describeList start xs = start ++ "(" ++ join ", " xs ++ ")"
