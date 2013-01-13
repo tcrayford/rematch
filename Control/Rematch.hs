@@ -1,8 +1,41 @@
--- |This module defines an api for "matchers": rules that can pass or fail,
+-- |This module defines an api for matchers: rules that can pass or fail,
 -- and describe their failure and success conditions for humans to read.
--- This module also exports some useful matchers for things in the Prelude,
--- and some "combinators" that are useful for combining several matchers into one.
-module Control.Rematch where
+--
+-- This module also exports some useful matchers for things in the "Prelude",
+-- and some combinators that are useful for combining several matchers into one.
+module Control.Rematch(
+    Matcher(..)
+  -- ** Useful functions for running matchers
+  , expect
+  , runMatch
+  -- ** Basic Matchers
+  , is
+  , equalTo
+  -- ** Matchers on lists
+  , isEmpty
+  , hasSize
+  , everyItem
+  , hasItem
+  -- ** Matchers on Ord
+  , greaterThan
+  , greaterThanOrEqual
+  , lessThan
+  , lessThanOrEqual
+  -- ** Matchers on Maybe
+  , isJust
+  , isNothing
+  -- ** Matchers on Either
+  , isRight
+  , isLeft
+  -- ** Matcher combinators
+  , no
+  , allOf
+  , anyOf
+  -- ** Utility functions for writing your own matchers
+  , matcherOn
+  , matchList
+  , standardMismatch
+  ) where
 import Test.HUnit(Assertion, assertFailure)
 import qualified Data.Maybe as M
 import Control.Rematch.Run
@@ -19,11 +52,13 @@ data Matcher a = Matcher {
   }
 
 -- |Run a matcher as an HUnit assertion
+--
 -- Example output:
+--
 -- @
 -- Expected:
--- equalTo "a"
--- but:  was "b"
+-- equalTo \"a\"
+-- but:  was \"b\"
 -- @
 expect :: a -> Matcher a -> Assertion
 expect a matcher = case res of
@@ -143,6 +178,7 @@ isNothing = Matcher {
   , describeMismatch = standardMismatch
   }
 
+-- |Matches if an Either is Right
 isRight :: (Show a, Show b) => Matcher (Either a b)
 isRight = Matcher {
     match = go
@@ -152,6 +188,7 @@ isRight = Matcher {
   where go (Right _) = True
         go (Left _) = False
 
+-- |Matches if an Either is Left
 isLeft :: (Show a, Show b) => Matcher (Either a b)
 isLeft = Matcher {
     match = go
