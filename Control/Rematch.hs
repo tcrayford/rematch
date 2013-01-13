@@ -19,6 +19,12 @@ data Matcher a = Matcher {
   }
 
 -- |Run a matcher as an HUnit assertion
+-- Example output:
+-- @
+-- Expected:
+-- equalTo "a"
+-- but:  was "b"
+-- @
 expect :: a -> Matcher a -> Assertion
 expect a matcher = case res of
   MatchSuccess -> return ()

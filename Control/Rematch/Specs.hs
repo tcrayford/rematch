@@ -16,7 +16,7 @@ main = hspec $ do
 
   describe "expect" $
     it "is used as an hunit test" $
-      expect "a" (is "a")
+      expect "b" (is "a")
 
   generalPurposeMatcherSpecs
   combinedMatcherSpecs
