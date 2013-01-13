@@ -13,13 +13,9 @@ main = hspec $ do
     it "has a failure message when inverted" $
       checkMatch (no (is 'a')) 'a' @?= Just ("not equalTo 'a'", "was 'a'")
 
-  describe "assertThat" $
-    it "is used as an hunit test" $
-      assertThat "a" (is "a")
-
   describe "expect" $
-    it "is used as an hunit test just like assertThat" $
-      expect "a" (equalTo "a")
+    it "is used as an hunit test" $
+      expect "a" (is "a")
 
   generalPurposeMatcherSpecs
   combinedMatcherSpecs
