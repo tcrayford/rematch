@@ -3,7 +3,7 @@
 -- This module also exports some useful matchers for things in the Prelude,
 -- and some "combinators" that are useful for combining several matchers into one.
 module Control.Rematch where
-import Test.HUnit
+import Test.HUnit(Assertion, assertFailure)
 import qualified Data.Maybe as M
 import Control.Rematch.Run
 import Control.Rematch.Formatting
@@ -20,7 +20,10 @@ data Matcher a = Matcher {
 
 -- |Run a matcher as an HUnit assertion
 expect :: a -> Matcher a -> Assertion
-expect a matcher = runMatch matcher a @?= MatchSuccess
+expect a matcher = case res of
+  MatchSuccess -> return ()
+  (MatchFailure msg) -> assertFailure msg
+  where res = runMatch matcher a
 
 -- |Inverts a matcher, so success becomes failure, and failure
 -- becomes success
