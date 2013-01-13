@@ -3,6 +3,7 @@ import Test.Hspec
 import Test.HUnit
 import Test.Hspec.HUnit()
 import Control.Rematch
+import Control.Rematch.Formatting
 
 main :: IO ()
 main = hspec $ do

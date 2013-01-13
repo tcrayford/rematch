@@ -1,13 +1,21 @@
+-- |This module defines an api for "matchers": rules that can pass or fail,
+-- and describe their failure and success conditions for humans to read.
+-- This module also exports some useful matchers for things in the Prelude,
+-- and some "combinators" that are useful for combining several matchers into one.
 module Control.Rematch where
 import Test.HUnit
 import qualified Data.Maybe as M
 import Control.Rematch.Run
 import Control.Rematch.Formatting
 
+-- |The basic api for a matcher
 data Matcher a = Matcher {
     match :: a -> Bool
+  -- ^ A function that returns True if the matcher should pass, False if it should fail
   , description :: String
+  -- ^ A description of the matcher (usually of its success conditions)
   , describeMismatch :: a -> String
+  -- ^ A description to be shown if the match fails.
   }
 
 -- |Run a matcher as an HUnit assertion

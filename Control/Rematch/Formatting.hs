@@ -1,3 +1,5 @@
+-- |This module contains some utility functions for formatting descriptions
+-- It is probably only useful when you're writing your own matchers
 module Control.Rematch.Formatting where
 
 -- |Utility function for formatting a list of strings like the following.
