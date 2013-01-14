@@ -2,8 +2,8 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                rematch
-version:             0.1.0.1
-synopsis:            A simple api for "matchers"
+version:             0.1.0.2
+synopsis:            A simple api for matchers
 description:
     Rematch is a simple library of matchers, which express rules
     that can pass or fail. Matchers also report their failure with
@@ -26,5 +26,5 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 library
-  exposed-modules:     Control.Rematch, Control.Rematch.Formatting
+  exposed-modules:     Control.Rematch, Control.Rematch.Formatting, Control.Rematch.Run
   build-depends:       base >= 4.5.0 && < 5, HUnit >= 1.0
