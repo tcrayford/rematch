@@ -28,7 +28,7 @@ module Control.Rematch(
   , isRight
   , isLeft
   -- ** Matcher combinators
-  , no
+  , isNot
   , allOf
   , anyOf
   -- ** Utility functions for writing your own matchers
@@ -68,8 +68,8 @@ expect a matcher = case res of
 
 -- |Inverts a matcher, so success becomes failure, and failure
 -- becomes success
-no :: Matcher a -> Matcher a
-no (Matcher m desc mismatch) = Matcher (not . m) ("not " ++ desc) mismatch
+isNot :: Matcher a -> Matcher a
+isNot (Matcher m desc mismatch) = Matcher (not . m) ("isNot " ++ desc) mismatch
 
 -- |Run a matcher, producing a Match with a good error string
 runMatch :: Matcher a -> a -> Match
