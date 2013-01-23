@@ -23,6 +23,7 @@ module Control.Rematch(
   , lessThanOrEqual
   -- ** Matchers on Maybe
   , isJust
+  , hasJust
   , isNothing
   -- ** Matchers on Either
   , isRight
@@ -182,6 +183,18 @@ isJust = Matcher {
   , description = "isJust"
   , describeMismatch = standardMismatch
   }
+
+-- |Matcher combinator, turns Matcher a to Matcher (Maybe a)
+-- Fails if the Maybe is Nothing, otherwise tries the original
+-- matcher on the content of the Maybe
+hasJust :: Matcher a -> Matcher (Maybe a)
+hasJust matcher = Matcher {
+    match = (\a -> M.isJust a && (match matcher (M.fromJust a)))
+  , description = "hasJust(" ++ description matcher ++ ")"
+  , describeMismatch = mismatchDescription
+  }
+  where mismatchDescription (Just x) = matcher `describeMismatch` x
+        mismatchDescription Nothing  = "but was Nothing"
 
 -- |Matches if the input is Nothing
 isNothing :: (Show a) => Matcher (Maybe a)
