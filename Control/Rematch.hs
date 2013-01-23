@@ -57,9 +57,8 @@ data Matcher a = Matcher {
 -- Example output:
 --
 -- @
--- Expected:
--- equalTo \"a\"
--- but:  was \"b\"
+--Expected: equalTo "a"
+--     but: was "b"
 -- @
 expect :: a -> Matcher a -> Assertion
 expect a matcher = case res of
