@@ -54,6 +54,13 @@ combinedMatcherSpecs = describe "combined matchers" $ do
     it "fails if all the individual matchers fail" $
       checkMatch (anyOf [is 'a', is 'b']) 'c' @?= Just ("or(equalTo 'a', equalTo 'b')", "(was 'c', was 'c')")
 
+  describe "on" $ do
+    it "translates Matcher a to Matcher b using (b -> a)" $
+      checkMatch ((is 0) `on` (length, "length")) [] @?= Nothing
+
+    it "translates Matcher a to Matcher b using (b -> a)" $
+      checkMatch ((is 1) `on` (length, "length")) [] @?= Just ("length equalTo 1", "was 0")
+
 listMatcherSpecs :: Spec
 listMatcherSpecs = describe "list matchers" $ do
   describe "everyItem" $ do

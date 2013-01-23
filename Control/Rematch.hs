@@ -31,6 +31,7 @@ module Control.Rematch(
   , isNot
   , allOf
   , anyOf
+  , on
   -- ** Utility functions for writing your own matchers
   , matcherOn
   , matchList
@@ -101,6 +102,19 @@ anyOf matchers = Matcher {
     match = or . matchList matchers
   , description = describeList "or" $ map description matchers
   , describeMismatch = \a -> describeList "" (map (`describeMismatch` a) matchers)
+  }
+
+-- |A combinator that translates Matcher a to Matcher b using
+-- a function :: (a -> b)
+-- Takes a name of the function for better error messages
+--
+-- Using this as an infix operator gets you some nice syntax:
+-- expect ((is 1) `on` (length, "length")) []
+on :: Matcher b -> ((a -> b), String) -> Matcher a
+on m (f, name) = Matcher {
+    match = match m . f
+  , description = name ++ " " ++ (description m)
+  , describeMismatch = describeMismatch m  . f
   }
 
 -- |Matches if every item in the input list passes a matcher
