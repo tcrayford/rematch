@@ -9,10 +9,10 @@ main :: IO ()
 main = hspec $ do
   describe "rematch core" $ do
     it "can be inverted" $
-      checkMatch (no (is 'a')) 'b' @?= Nothing
+      checkMatch (isNot (is 'a')) 'b' @?= Nothing
 
     it "has a failure message when inverted" $
-      checkMatch (no (is 'a')) 'a' @?= Just ("not equalTo 'a'", "was 'a'")
+      checkMatch (isNot (is 'a')) 'a' @?= Just ("isNot equalTo 'a'", "was 'a'")
 
   describe "expect" $
     it "is used as an hunit test" $
