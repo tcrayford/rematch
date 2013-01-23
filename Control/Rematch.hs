@@ -27,7 +27,9 @@ module Control.Rematch(
   , isNothing
   -- ** Matchers on Either
   , isRight
+  , hasRight
   , isLeft
+  , hasLeft
   -- ** Matcher combinators
   , isNot
   , allOf
@@ -214,6 +216,17 @@ isRight = Matcher {
   where go (Right _) = True
         go (Left _) = False
 
+-- |Matcher combinator: turns a Matcher b into a Matcher on the
+-- Right side of an Either a b
+hasRight :: (Show a, Show b) => Matcher b -> Matcher (Either a b)
+hasRight matcher = Matcher {
+    match = (\e -> case e of
+                (Right a) -> match matcher a
+                (Left _) -> False)
+  , description = "hasRight(" ++ description matcher ++ ")"
+  , describeMismatch = standardMismatch
+  }
+
 -- |Matches if an Either is Left
 isLeft :: (Show a, Show b) => Matcher (Either a b)
 isLeft = Matcher {
@@ -223,6 +236,18 @@ isLeft = Matcher {
   }
   where go (Left _) = True
         go (Right _) = False
+
+-- |Matcher combinator: turns a Matcher a into a Matcher on the
+-- Left side of an Either a b
+hasLeft :: (Show a, Show b) => Matcher a -> Matcher (Either a b)
+hasLeft matcher = Matcher {
+    match = (\e -> case e of
+                (Left a) -> match matcher a
+                (Right _) -> False)
+  , description = "hasRight(" ++ description matcher ++ ")"
+  , describeMismatch = standardMismatch
+  }
+
 
 -- |Utility function for running a list of matchers
 matchList :: [Matcher a] -> a -> [Bool]
