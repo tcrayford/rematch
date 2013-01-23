@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                rematch
-version:             0.1.0.2
+version:             0.1.1.0
 synopsis:            A simple api for matchers
 description:
     Rematch is a simple library of matchers, which express rules
