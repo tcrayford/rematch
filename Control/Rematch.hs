@@ -75,7 +75,7 @@ isNot (Matcher m desc mismatch) = Matcher (not . m) ("isNot " ++ desc) mismatch
 runMatch :: Matcher a -> a -> Match
 runMatch m a = if match m a
   then MatchSuccess
-  else MatchFailure $ "Expected:\n " ++ description m ++ "\n  but:  " ++ describeMismatch m a
+  else MatchFailure $ "\nExpected: " ++ description m ++ "\n     but: " ++ describeMismatch m a
 
 -- |Matcher on equality
 is :: (Show a, Eq a) => a -> Matcher a
