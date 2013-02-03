@@ -3,6 +3,14 @@ import Test.QuickCheck.Property
 import Control.Rematch
 import Control.Rematch.Run
 
+-- |Run a matcher as an QuickCheck assertion
+--
+-- Example output:
+--
+-- @
+--Expected: equalTo "a"
+--     but: was "b"
+-- @
 expectP :: a -> Matcher a -> Property
 expectP a matcher = property $ (runMatch matcher a)
 
