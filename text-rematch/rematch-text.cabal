@@ -3,7 +3,7 @@
 
 name:                rematch-text
 version:             0.1.0.0
--- synopsis:
+synopsis:            `rematch` matchers for Data.Text
 -- description:
 license:             MIT
 license-file:        LICENSE
