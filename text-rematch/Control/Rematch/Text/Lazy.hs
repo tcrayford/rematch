@@ -1,8 +1,8 @@
 -- |This module exports `rematch` matchers for strict Data.Text
-module Control.Rematch.Text.Strict where
-import Data.Text
+module Control.Rematch.Text.Lazy where
+import Data.Text.Lazy
 import Data.Char(isSpace)
-import qualified Data.Text as T
+import qualified Data.Text.Lazy as T
 import Control.Rematch(Matcher(..), standardMismatch)
 
 -- |matchers if the input begins with some Text
