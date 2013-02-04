@@ -39,3 +39,10 @@ equalToIgnoringWhitespace t = Matcher {
   , describeMismatch = standardMismatch
   }
   where removeWhitespace = T.filter (not . isSpace)
+
+isEmptyText :: Matcher Text
+isEmptyText = Matcher {
+    match = T.null
+  , description = "isEmptyText"
+  , describeMismatch = standardMismatch
+  }

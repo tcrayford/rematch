@@ -43,6 +43,13 @@ main = hspec $ describe "rematch-text" $ do
     it "fails when the input is different" $
       checkMatch "abd" (equalToIgnoringWhitespace "bc") @?= Just ("equalToIgnoringWhitespace \"bc\"", "was \"abd\"")
 
+  describe "isEmptyText" $ do
+    it "matches when the input is empty" $
+      checkMatch "" isEmptyText @?= Nothing
+
+    it "fails when the input has content" $
+      checkMatch "asdf" isEmptyText @?= Just ("isEmptyText", "was \"asdf\"")
+
 checkMatch :: a -> Matcher a -> Maybe (String, String)
 checkMatch a m = if match m a
   then Nothing
