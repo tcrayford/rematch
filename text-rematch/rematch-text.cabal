@@ -15,6 +15,6 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 library
-  exposed-modules: Control.Rematch.Text.Strict, Control.Rematch.Lazy
+  exposed-modules: Control.Rematch.Text.Strict, Control.Rematch.Text.Lazy
   -- other-modules:
-  build-depends:       base ==4.5.*, rematch == 0.1.*
+  build-depends:       base ==4.5.*, rematch == 0.1.*, text >= 0.10
