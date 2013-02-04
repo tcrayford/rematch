@@ -26,8 +26,22 @@ main = hspec $ describe "rematch-text" $ do
     it "matches when the input contains the text" $
       checkMatch "abcd" (containsText "bc") @?= Nothing
 
-    it "fails when the input contains the text" $
+    it "fails when the input does not contain the text" $
       checkMatch "abd" (containsText "bc") @?= Just ("containsText \"bc\"", "was \"abd\"")
+
+  describe "equalToIgnoringCase" $ do
+    it "matches when the input is equal with different case" $
+      checkMatch "Abcd" (equalToIgnoringCase "aBcD") @?= Nothing
+
+    it "fails when the input isn't equal after case conversion" $
+      checkMatch "abd" (equalToIgnoringCase "bc") @?= Just ("equalToIgnoringCase \"bc\"", "was \"abd\"")
+
+  describe "equalToIgnoringWhitespace" $ do
+    it "matches when the input is equal with different whitespace" $
+      checkMatch "   abcd" (equalToIgnoringWhitespace "abcd    ") @?= Nothing
+
+    it "fails when the input is different" $
+      checkMatch "abd" (equalToIgnoringWhitespace "bc") @?= Just ("equalToIgnoringWhitespace \"bc\"", "was \"abd\"")
 
 checkMatch :: a -> Matcher a -> Maybe (String, String)
 checkMatch a m = if match m a
