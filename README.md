@@ -16,5 +16,5 @@ http://hackage.haskell.org/package/rematch
 
 http://hackage.haskell.org/package/rematch-text
 
-Authors
+# Authors
 This library is written and maintained by Tom Crayford, tcrayford@gmail.com.
