@@ -13,6 +13,7 @@ cabal install rematch
 # Documentation
 
 http://hackage.haskell.org/package/rematch
+
 http://hackage.haskell.org/package/rematch-text
 
 Authors
