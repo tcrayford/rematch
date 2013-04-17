@@ -2,9 +2,7 @@ module Control.Rematch.Specs where
 import Test.Hspec
 import Test.HUnit
 import Test.Hspec.HUnit()
-import Test.Hspec.QuickCheck
 import Control.Rematch
-import Control.Rematch.QuickCheck
 import Control.Rematch.Formatting
 
 main :: IO ()
@@ -19,9 +17,6 @@ main = hspec $ do
   describe "expect" $ do
     it "is used as an hunit test" $
       expect "a" (is "a")
-
-    prop "can be used as a QuickCheck test" $
-      (\i -> expectP i (greaterThanOrEqual (minBound :: Int)))
 
   generalPurposeMatcherSpecs
   combinedMatcherSpecs
