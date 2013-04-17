@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                rematch
-version:             0.1.2.2
+version:             0.2.0.0
 synopsis:            A simple api for matchers
 description:
     Rematch is a simple library of matchers, which express rules
@@ -26,5 +26,5 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 library
-  exposed-modules:     Control.Rematch, Control.Rematch.Formatting, Control.Rematch.Run, Control.Rematch.QuickCheck
-  build-depends:       base >= 4.5.0 && < 5, HUnit >= 1.0, QuickCheck >= 2.0
+  exposed-modules:     Control.Rematch, Control.Rematch.Formatting, Control.Rematch.Run
+  build-depends:       base >= 4.5.0 && < 5, HUnit >= 1.0
