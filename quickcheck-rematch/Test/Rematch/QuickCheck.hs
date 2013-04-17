@@ -1,4 +1,4 @@
-module Control.Rematch.QuickCheck where
+module Test.Rematch.QuickCheck where
 import Test.QuickCheck.Property
 import Test.QuickCheck.Monadic
 import Control.Rematch
