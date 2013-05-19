@@ -2,8 +2,8 @@
 
 set -e
 
-(cd core && cabal install --enable-tests --only-dependencies && cabal build && cabal test)
-(cd hunit-rematch && cabal install --enable-tests --only-dependencies && cabal build && cabal test)
-(cd text-rematch && cabal install --enable-tests --only-dependencies && cabal build && cabal test)
-(cd quickcheck-rematch && cabal install --enable-tests --only-dependencies && cabal build && cabal test)
-(cd bytestring-rematch/ && cabal install --enable-tests --only-dependencies  && cabal build && cabal test)
+(cd core && cabal install --enable-tests --only-dependencies && cabal configure --enable-tests && cabal build && cabal test)
+(cd hunit-rematch && cabal install --enable-tests --only-dependencies && cabal configure --enable-tests && cabal build && cabal test)
+(cd text-rematch && cabal install --enable-tests --only-dependencies && cabal configure --enable-tests && cabal build && cabal test)
+(cd quickcheck-rematch && cabal install --enable-tests --only-dependencies && cabal configure --enable-tests && cabal build && cabal test)
+(cd bytestring-rematch/ && cabal install --enable-tests --only-dependencies  && cabal configure --enable-tests && cabal build && cabal test)
