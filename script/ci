@@ -7,3 +7,4 @@ set -e
 (cd text-rematch && cabal install --enable-tests --only-dependencies && cabal configure --enable-tests && cabal build && cabal test)
 (cd quickcheck-rematch && cabal install --enable-tests --only-dependencies && cabal configure --enable-tests && cabal build && cabal test)
 (cd bytestring-rematch/ && cabal install --enable-tests --only-dependencies  && cabal configure --enable-tests && cabal build && cabal test)
+(cd unordered-containers-rematch/ && cabal install --enable-tests --only-dependencies  && cabal configure --enable-tests && cabal build && cabal test)

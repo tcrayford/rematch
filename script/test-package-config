@@ -7,10 +7,12 @@ ghc-pkg unregister quickcheck-rematch
 ghc-pkg unregister hunit-rematch
 ghc-pkg unregister rematch-text
 ghc-pkg unregister rematch-bytestring
+ghc-pkg unregister rematch-unordered-containers
 
 (cd core && cabal install)
 (cd hunit-rematch && cabal install)
 (cd text-rematch && cabal install)
 (cd quickcheck-rematch && cabal install)
 (cd bytestring-rematch/ && cabal install)
+(cd unordered-containers-rematch/ && cabal install)
 script/test

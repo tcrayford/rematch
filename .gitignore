@@ -3,3 +3,4 @@ text-rematch/dist
 hunit-rematch/dist/
 quickcheck-rematch/dist/
 bytestring-rematch/dist/
+unordered-containers-rematch/dist/

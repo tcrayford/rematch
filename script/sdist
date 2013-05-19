@@ -7,3 +7,4 @@ set -e
 (cd text-rematch && cabal sdist)
 (cd quickcheck-rematch && cabal sdist)
 (cd bytestring-rematch/ && cabal sdist)
+(cd unordered-containers-rematch/ && cabal sdist)
