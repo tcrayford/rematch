@@ -9,7 +9,10 @@ import qualified Control.Rematch.ByteString.Lazy as L
 import Data.ByteString.Char8
 
 main :: IO ()
-main = hspec $ describe "rematch-bytestring" $ do
+main = hspec $ specs
+
+specs :: Spec
+specs = describe "rematch-bytestring" $ do
   describe "Control.Rematch.ByteString.Strict" $ do
     describe "startsWith" $ do
       it "passes when the input begins with the query" $

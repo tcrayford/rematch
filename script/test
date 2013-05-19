@@ -2,8 +2,4 @@
 
 set -e
 
-(cd core && script/test)
-(cd text-rematch && script/test)
-(cd bytestring-rematch/ && script/test)
-(cd quickcheck-rematch && script/test)
-(cd hunit-rematch && script/test)
+runghc -icore -itext-rematch -ibytestring-rematch -iquickcheck-rematch -ihunit-rematch Main.hs

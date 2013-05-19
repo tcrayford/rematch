@@ -7,7 +7,10 @@ import Control.Rematch
 import Control.Rematch.Text.Strict
 
 main :: IO ()
-main = hspec $ describe "rematch-text" $ do
+main = hspec $ specs
+
+specs :: Spec
+specs = describe "rematch-text" $ do
   describe "startsWith" $ do
     it "passes when the input begins with the query" $
       checkMatch "abcd" (startsWith "ab") @?= Nothing

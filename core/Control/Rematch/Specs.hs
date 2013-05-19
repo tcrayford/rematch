@@ -6,7 +6,10 @@ import Control.Rematch
 import Control.Rematch.Formatting
 
 main :: IO ()
-main = hspec $ do
+main = hspec $ specs
+
+specs :: Spec
+specs = do
   describe "rematch core" $ do
     it "can be inverted" $
       checkMatch (isNot (is 'a')) 'b' @?= Nothing

@@ -6,6 +6,9 @@ import Control.Rematch
 import Test.Rematch.QuickCheck
 
 main :: IO ()
-main = hspec $ do
+main = hspec $ specs
+
+specs :: Spec
+specs = do
   prop "it can be used for quickcheck tests" $
     (\i -> expectP i (greaterThanOrEqual (minBound :: Int)))
