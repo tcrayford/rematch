@@ -15,7 +15,7 @@ hasSize :: (Show k, Show v, Hashable k) => Int -> Matcher (HashMap k v)
 hasSize n = Matcher {
     match = (== n) . M.size
   , description = "hasSize " ++ show n
-  , describeMismatch = standardMismatch
+  , describeMismatch = (\m -> "had size " ++ show (M.size m))
   }
 
 hasKey :: (Show k, Show v, Hashable k, Eq k) => k -> Matcher (HashMap k v)

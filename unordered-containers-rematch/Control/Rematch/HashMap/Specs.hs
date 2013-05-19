@@ -26,7 +26,7 @@ specs = describe "rematch-unordered-containers" $ do
         checkMatch (S.fromList [("", "")]) (RS.hasSize 1) @?= Nothing
 
       it "hasSize fails when the size is incorrect" $
-        checkMatch (strict [(1,2)]) (RS.hasSize 0) @?= Just ("hasSize 0","was fromList [(1,2)]")
+        checkMatch (strict [(1,2)]) (RS.hasSize 0) @?= Just ("hasSize 0","had size 1")
 
     describe "hasKey" $ do
       it "hasKey passes when the list has the right key" $
@@ -81,7 +81,7 @@ specs = describe "rematch-unordered-containers" $ do
         checkMatch (S.fromList [("", "")]) (RL.hasSize 1) @?= Nothing
 
       it "hasSize fails when the size is incorrect" $
-        checkMatch (strict [(1,2)]) (RL.hasSize 0) @?= Just ("hasSize 0","was fromList [(1,2)]")
+        checkMatch (strict [(1,2)]) (RL.hasSize 0) @?= Just ("hasSize 0","had size 1")
 
     describe "hasKey" $ do
       it "hasKey passes when the list has the right key" $
