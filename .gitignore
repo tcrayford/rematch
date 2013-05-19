@@ -1,2 +1,4 @@
 core/dist/
 text-rematch/dist
+hunit-rematch/dist/
+quickcheck-rematch/dist/
