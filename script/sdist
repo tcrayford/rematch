@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+(cd core && cabal sdist)
+(cd hunit-rematch && cabal sdist)
+(cd text-rematch && cabal sdist)
+(cd quickcheck-rematch && cabal sdist)
+(cd bytestring-rematch/ && cabal sdist)
