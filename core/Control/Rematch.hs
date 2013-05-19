@@ -6,7 +6,6 @@
 module Control.Rematch(
     Matcher(..)
   -- ** Useful functions for running matchers
-  , expect
   , runMatch
   -- ** Basic Matchers
   , is
@@ -40,7 +39,6 @@ module Control.Rematch(
   , matchList
   , standardMismatch
   ) where
-import Test.HUnit(Assertion, assertFailure)
 import qualified Data.Maybe as M
 import Control.Rematch.Run
 import Control.Rematch.Formatting
@@ -54,20 +52,6 @@ data Matcher a = Matcher {
   , describeMismatch :: a -> String
   -- ^ A description to be shown if the match fails.
   }
-
--- |Run a matcher as an HUnit assertion
---
--- Example output:
---
--- @
---Expected: equalTo "a"
---     but: was "b"
--- @
-expect :: a -> Matcher a -> Assertion
-expect a matcher = case res of
-  MatchSuccess -> return ()
-  (MatchFailure msg) -> assertFailure msg
-  where res = runMatch matcher a
 
 -- |Inverts a matcher, so success becomes failure, and failure
 -- becomes success
