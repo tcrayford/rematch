@@ -27,4 +27,4 @@ cabal-version:       >=1.8
 
 library
   exposed-modules:     Control.Rematch, Control.Rematch.Formatting, Control.Rematch.Run
-  build-depends:       base >= 4.5.0 && < 5, HUnit >= 1.0
+  build-depends:       base >= 4.5.0 && < 5
