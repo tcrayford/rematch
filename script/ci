@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+(cd core && cabal configure --enable-tests && cabal build && cabal test)
+(cd hunit-rematch && cabal configure --enable-tests && cabal build && cabal test)
+(cd text-rematch && cabal configure --enable-tests && cabal build && cabal test)
+(cd quickcheck-rematch && cabal configure --enable-tests && cabal build && cabal test)
+(cd bytestring-rematch/ && cabal configure --enable-tests && cabal build && cabal test)
