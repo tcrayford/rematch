@@ -1,6 +1,5 @@
 module Test.Rematch.Specs.HUnit where
 import Test.Hspec
-import Test.HUnit
 import Test.Hspec.HUnit()
 import Test.Rematch.HUnit
 import Control.Rematch(is)
