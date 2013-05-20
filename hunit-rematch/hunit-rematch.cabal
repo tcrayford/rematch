@@ -18,7 +18,8 @@ cabal-version:       >=1.8
 library
   -- exposed-modules:     
   -- other-modules:       
-  build-depends:       base ==4.5.*
+  build-depends:       base ==4.5.*, rematch >= 0.2, HUnit >= 1.2
+  exposed-modules:     Test.Rematch.HUnit
 test-suite tests
   build-depends:       base >= 4.5.0 && < 5, hspec >= 1.4, HUnit >= 1.2, rematch >= 0.2
   type: exitcode-stdio-1.0
