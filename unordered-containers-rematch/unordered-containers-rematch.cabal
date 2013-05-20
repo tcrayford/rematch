@@ -16,7 +16,7 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 library
-  -- exposed-modules:     
+  exposed-modules: Control.Rematch.HashMap.Lazy, Control.Rematch.HashMap.Strict, Control.Rematch.HashSet
   -- other-modules:       
   build-depends:       base ==4.5.*, unordered-containers >= 0.2, rematch >= 0.2, hashable >= 1.2
 test-suite tests
