@@ -5,7 +5,7 @@ name:                hunit-rematch
 version:             0.1.0.1
 synopsis:            HUnit support for rematch
 -- description:         
-homepage:            github.com/tcrayford/rematch
+homepage:            http://github.com/tcrayford/rematch
 license:             MIT
 license-file:        LICENSE
 author:              Tom Crayford
