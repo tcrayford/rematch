@@ -60,6 +60,22 @@ combinedMatcherSpecs = describe "combined matchers" $ do
     it "translates Matcher a to Matcher b using (b -> a)" $
       checkMatch ((is 1) `on` (length, "length")) [] @?= Just ("length equalTo 1", "was 0")
 
+  describe "andAlso" $ do
+    it "matches when both matchers pass" $
+      checkMatch (greaterThan 5 `andAlso` lessThan 10) 7 @?= Nothing
+
+    it "fails when the first matcher fails" $
+      checkMatch (greaterThan 5 `andAlso` lessThan 10) 3 @?= Just ("greaterThan(5) and lessThan(10)", "was 3")
+
+    it "fails when the second matcher fails" $
+      checkMatch (greaterThan 5 `andAlso` lessThan 10) 13 @?= Just ("greaterThan(5) and lessThan(10)", "was 13")
+
+    it "fails when both matchers fail, but collapses mismatch messages" $
+      checkMatch (is 1 `andAlso` is 2 ) 3 @?= Just ("equalTo 1 and equalTo 2", "was 3")
+
+    it "fails when both matchers fail with unique messages" $
+      checkMatch (hasItem (is 1) `andAlso` hasSize 1 ) [2,3] @?= Just ("hasItem(equalTo 1) and hasSize(1)", "(was 2, was 3) and was [2,3]")
+
 listMatcherSpecs :: Spec
 listMatcherSpecs = describe "list matchers" $ do
   describe "everyItem" $ do
