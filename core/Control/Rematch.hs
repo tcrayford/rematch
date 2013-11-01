@@ -34,11 +34,15 @@ module Control.Rematch(
   , allOf
   , anyOf
   , on
+  , andAlso
   -- ** Utility functions for writing your own matchers
   , matcherOn
   , matchList
   , standardMismatch
   ) where
+import Control.Applicative (liftA2)
+import Data.List ( nub
+                 , intercalate )
 import qualified Data.Maybe as M
 import Control.Rematch.Run
 import Control.Rematch.Formatting
@@ -102,6 +106,27 @@ on m (f, name) = Matcher {
   , description = name ++ " " ++ (description m)
   , describeMismatch = describeMismatch m  . f
   }
+
+-- |A combinator that can be used as infix between to matchers on the same
+-- type. For example:
+-- betweenFiveAndTen :: Matcher Int
+-- betweenFiveAndTen = greaterThan 5 `andAlso` lessThan 10
+andAlso :: Matcher a -> Matcher a -> Matcher a
+andAlso m m' = Matcher {
+    match = liftA2 (&&) match1 match2
+  , description = description m ++ " and " ++ description m'
+  , describeMismatch = combineMismatch
+  }
+  where describeMismatch1 = describeMismatch m
+        describeMismatch2 = describeMismatch m'
+        match1            = match m
+        match2            = match m'
+        collapseMismatch  = intercalate " and " . nub
+        combineMismatch x
+          | not (match1 x) && not (match2 x) = collapseMismatch [describeMismatch1 x, describeMismatch2 x]
+          | match1 x                         = describeMismatch1 x
+          | match2 x                         = describeMismatch2 x
+          | otherwise                        = "You've found a bug in rematch!"
 
 -- |Matches if every item in the input list passes a matcher
 everyItem :: Matcher a -> Matcher [a]
