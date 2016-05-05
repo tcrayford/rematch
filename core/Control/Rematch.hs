@@ -36,7 +36,7 @@ module Control.Rematch(
   , anyOf
   , on
   , andAlso
-  --, followedBy
+  , followedBy
   -- ** Utility functions for writing your own matchers
   , matcherOn
   , matchList
@@ -135,11 +135,21 @@ andAlso m m' = Matcher {
 -- input and the second argument matches the remaining items.  Designed to be
 -- used infix, e.g. 'is 5 `followedBy` is 6 `followedBy` isEmpty' can be used to
 -- match the list [5,6].
---followedBy :: Foldable f => Matcher a -> Matcher [a] -> Matcher (f a)
---followedBy l r = Matcher {
---    match = doMatch
---  , description = description l ++ " followed by " ++ description r
-
+followedBy :: (Show a, Foldable f) => Matcher a -> Matcher [a] -> Matcher (f a)
+followedBy l r = Matcher {
+    match = doMatch . F.toList
+  , description = description l ++ " followed by " ++ description r
+  , describeMismatch = doDescribe . F.toList
+  }
+  where doMatch [] = False
+        doMatch (x:xs) = match l x && match r xs
+        doDescribe [] = "got an empty list: []"
+        doDescribe (x:[]) | match l x = "matched " ++ show x
+                          | otherwise = standardMismatch x
+        doDescribe (x:xs) | match l x = "matched " ++ show x ++ ", " ++ describeMismatch r xs
+                          | otherwise = standardMismatch x ++ ", " ++ describeMismatch r xs
+infixr 0 `followedBy`
+    
 -- |Matches a Foldable instance if it contains exactly one item that passes a
 -- matcher
 isSingleton :: (Show a, Foldable f) => Matcher a -> Matcher (f a)
