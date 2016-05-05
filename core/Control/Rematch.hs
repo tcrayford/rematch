@@ -44,6 +44,7 @@ import Control.Applicative (liftA2)
 import Data.List ( nub
                  , intercalate )
 import qualified Data.Maybe as M
+import qualified Data.Foldable as F
 import Control.Rematch.Run
 import Control.Rematch.Formatting
 
@@ -129,25 +130,26 @@ andAlso m m' = Matcher {
           | otherwise                        = "You've found a bug in rematch!"
 
 -- |Matches if every item in the input list passes a matcher
-everyItem :: Matcher a -> Matcher [a]
+everyItem :: Foldable f => Matcher a -> Matcher (f a)
 everyItem m = Matcher {
     match = all (match m)
   , description = "everyItem(" ++ description m ++ ")"
-  , describeMismatch = describeList "" . map (describeMismatch m) . filter (not . match m)
+  , describeMismatch = describeList "" . fmap (describeMismatch m) .
+                       filter (not . match m) . F.toList
   }
 
 -- |Matches if any of the items in the input list passes the provided matcher
-hasItem :: Matcher a -> Matcher [a]
+hasItem :: Foldable f => Matcher a -> Matcher (f a)
 hasItem m = Matcher {
     match = any (match m)
   , description = "hasItem(" ++ description m ++ ")"
-  , describeMismatch = go
+  , describeMismatch = go . F.toList
   }
   where go [] = "got an empty list: []"
         go as = describeList "" (map (describeMismatch m) as)
 
 -- |Matches if the input list is empty
-isEmpty :: (Show a) => Matcher [a]
+isEmpty :: (Show (f a), Foldable f) => Matcher (f a)
 isEmpty = Matcher {
     match = null
   , description = "isEmpty"
@@ -155,7 +157,7 @@ isEmpty = Matcher {
   }
 
 -- |Matches if the input list has the required size
-hasSize :: (Show a) => Int -> Matcher [a]
+hasSize :: (Show (f a), Foldable f) => Int -> Matcher (f a)
 hasSize n = Matcher {
     match = ((== n) . length)
   , description = "hasSize(" ++ show n ++ ")"
