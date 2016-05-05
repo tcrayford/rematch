@@ -110,6 +110,19 @@ listMatcherSpecs = describe "list matchers" $ do
 
   it "hasSize" pending
 
+  describe "isSingleton" $ do
+    it "does not match when there are no items" $
+       checkMatch (isSingleton $ equalTo 1) [] @?= Just ("isSingleton(equalTo 1)", "got an empty list: []")
+
+    it "matches when one item matches" $
+       checkMatch (isSingleton $ equalTo 1) [1] @?= Nothing
+
+    it "does not match when one item does not match" $
+       checkMatch (isSingleton $ equalTo 1) [2] @?= Just ("isSingleton(equalTo 1)", "was 2")
+
+    it "does not match when there are two items" $
+       checkMatch (isSingleton $ equalTo 1) [1, 1] @?= Just ("isSingleton(equalTo 1)", "got a list with multiple items: [1,1]")
+
 comparableSpecs :: Spec
 comparableSpecs = describe "comparables" $ do
   describe "greaterThan" $ do

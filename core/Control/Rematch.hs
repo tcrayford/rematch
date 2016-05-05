@@ -12,6 +12,7 @@ module Control.Rematch(
   , equalTo
   -- ** Matchers on lists
   , isEmpty
+  , isSingleton
   , hasSize
   , everyItem
   , hasItem
@@ -35,6 +36,7 @@ module Control.Rematch(
   , anyOf
   , on
   , andAlso
+  --, followedBy
   -- ** Utility functions for writing your own matchers
   , matcherOn
   , matchList
@@ -128,6 +130,27 @@ andAlso m m' = Matcher {
           | match1 x                         = describeMismatch1 x
           | match2 x                         = describeMismatch2 x
           | otherwise                        = "You've found a bug in rematch!"
+
+-- |Matches if the matcher in the first argument matches the first item in the
+-- input and the second argument matches the remaining items.  Designed to be
+-- used infix, e.g. 'is 5 `followedBy` is 6 `followedBy` isEmpty' can be used to
+-- match the list [5,6].
+--followedBy :: Foldable f => Matcher a -> Matcher [a] -> Matcher (f a)
+--followedBy l r = Matcher {
+--    match = doMatch
+--  , description = description l ++ " followed by " ++ description r
+
+-- |Matches a Foldable instance if it contains exactly one item that passes a
+-- matcher
+isSingleton :: (Show a, Foldable f) => Matcher a -> Matcher (f a)
+isSingleton m = Matcher {
+    match = \x -> (length x == 1) && all (match m) x
+  , description = "isSingleton(" ++ description m ++ ")"
+  , describeMismatch = go . F.toList
+  }
+  where go [] = "got an empty list: []"
+        go (x:[]) = describeMismatch m x
+        go (x:xs) = "got a list with multiple items: " ++ show (x:xs)
 
 -- |Matches if every item in the input list passes a matcher
 everyItem :: Foldable f => Matcher a -> Matcher (f a)
