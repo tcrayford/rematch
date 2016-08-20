@@ -110,6 +110,31 @@ listMatcherSpecs = describe "list matchers" $ do
 
   it "hasSize" pending
 
+  describe "isSingleton" $ do
+    it "does not match when there are no items" $
+       checkMatch (isSingleton $ equalTo 1) [] @?= Just ("isSingleton(equalTo 1)", "got an empty list: []")
+
+    it "matches when one item matches" $
+       checkMatch (isSingleton $ equalTo 1) [1] @?= Nothing
+
+    it "does not match when one item does not match" $
+       checkMatch (isSingleton $ equalTo 1) [2] @?= Just ("isSingleton(equalTo 1)", "was 2")
+
+    it "does not match when there are two items" $
+       checkMatch (isSingleton $ equalTo 1) [1, 1] @?= Just ("isSingleton(equalTo 1)", "got a list with multiple items: [1,1]")
+
+  describe "followedBy" $ do
+    it "does not match if there are no items" $
+       checkMatch (is 1 `followedBy` isEmpty) [] @?= Just ("equalTo 1 followed by isEmpty", "got an empty list: []")
+    it "matches if the inputs match its arguments" $
+       checkMatch (is 1 `followedBy` isEmpty) [1] @?= Nothing
+    it "fails if the first argument does not match the head" $
+       checkMatch (is 1 `followedBy` isEmpty) [2] @?= Just ("equalTo 1 followed by isEmpty", "was 2")
+    it "fails if the second argument does not match the tail" $
+       checkMatch (is 1 `followedBy` isSingleton $ equalTo 2) [1,4] @?= Just ("equalTo 1 followed by isSingleton(equalTo 2)", "matched 1, was 4")
+    it "includes match description of the tail when first argument does not match" $
+       checkMatch (is 1 `followedBy` is 2 `followedBy` isEmpty) [2,2] @?= Just ("equalTo 1 followed by equalTo 2 followed by isEmpty", "was 2, matched 2")
+
 comparableSpecs :: Spec
 comparableSpecs = describe "comparables" $ do
   describe "greaterThan" $ do
