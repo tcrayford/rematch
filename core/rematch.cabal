@@ -26,7 +26,10 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 library
-  exposed-modules:     Control.Rematch, Control.Rematch.Formatting, Control.Rematch.Run
+  exposed-modules:     Control.Rematch,
+                       Control.Rematch.Formatting,
+                       Control.Rematch.Run,
+                       Control.Rematch.Data
   build-depends:       base >= 4.5.0 && < 5
 test-suite tests
   build-depends:       base >= 4.5.0 && < 5, hspec >= 1.4, HUnit >= 1.2
